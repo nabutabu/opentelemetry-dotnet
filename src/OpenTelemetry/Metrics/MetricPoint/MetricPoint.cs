@@ -157,6 +157,11 @@ public struct MetricPoint
 
     internal readonly bool IsInitialized => this.aggregatorStore != null;
 
+    internal void AcquirePersistentReference() => Interlocked.Increment(this.ReferenceCount);
+
+    internal void ReleasePersistentReference() => Interlocked.Decrement(this.ReferenceCount);
+    
+
     /// <summary>
     /// Gets the sum long value associated with the metric point.
     /// </summary>

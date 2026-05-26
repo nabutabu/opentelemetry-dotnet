@@ -149,6 +149,32 @@ internal sealed class AggregatorStore
     // instead of another separate flag.
     internal bool IsExemplarEnabled() => this.exemplarFilter != ExemplarFilterType.AlwaysOff;
 
+    internal int BindLookup(ReadOnlySpan<KeyValuePair<string, object?>> tags)
+    {
+        var index = this.FindMetricAggregatorsDefault(tags);
+        metricPoints[index].AcquirePersistentReference();
+        return index;
+    }
+
+    internal void ReleaseLookup(int index)
+    {
+        if (index == -1)
+        {
+            return;
+        }
+        metricPoints[index].ReleasePersistentReference();
+    }
+
+    internal void UpdateBound(int index, T value)
+    {
+        metricPoints[index].Update(value);
+    }
+
+    internal void UpdateBoundWithExemplar(int index, T value, in ExemplarData exemplar)
+    {
+        metricPoints[index].UpdateWithExemplar(value, exemplar);
+    }
+
     internal void Update(long value, ReadOnlySpan<KeyValuePair<string, object?>> tags)
     {
         try

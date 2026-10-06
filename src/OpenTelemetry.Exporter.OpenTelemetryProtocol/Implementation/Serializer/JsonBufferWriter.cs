@@ -14,6 +14,12 @@ namespace OpenTelemetry.Exporter.OpenTelemetryProtocol.Implementation.Serializer
 /// path grows the buffer exactly as <see cref="ProtobufSerializer"/> does, which is
 /// what makes the two serializers comparable in a benchmark.
 /// </summary>
+/// <remarks>
+/// This also backs the scratch buffers of <c>JsonOtlpTagWriter</c>'s nested writers, where
+/// the "caller-owned" buffer is a rental from <c>ArrayPool&lt;byte&gt;.Shared</c> that
+/// <c>JsonOtlpTagWriter</c> resizes itself, since a nested write cannot reach the outer
+/// retry loop.
+/// </remarks>
 internal sealed class JsonBufferWriter : IBufferWriter<byte>
 {
     private readonly byte[] buffer;

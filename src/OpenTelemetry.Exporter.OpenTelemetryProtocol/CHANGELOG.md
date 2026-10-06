@@ -19,6 +19,18 @@ Notes](../../RELEASENOTES.md).
   [HttpClient logging](README.md#httpclient-logging) for configuration overrides.
   ([#7743](https://github.com/open-telemetry/opentelemetry-dotnet/pull/7743))
 
+* Avoid logging malformed HTTP request headers in the exporter's diagnostic log.
+  ([#7858](https://github.com/open-telemetry/opentelemetry-dotnet/pull/7858))
+
+* Avoid buffering the whole compressed request body in memory before sending it
+  on .NET Framework when using HTTP/protobuf with gzip compression.
+  ([#7879](https://github.com/open-telemetry/opentelemetry-dotnet/pull/7879))
+
+* The OTLP log exporter now exports `schema_url` on `ScopeLogs`. Log
+  records emitted from a `Logger` with a schema URL set now populate
+  `ScopeLogs.schema_url` in exported OTLP requests.
+  ([#7727](https://github.com/open-telemetry/opentelemetry-dotnet/pull/7727))
+
 ## 1.19.1
 
 Released 2026-Sep-21
